@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.dao.TheOrderDao">
+
+    <resultMap id="BaseResultMap" type="com.app.entity.TheOrder">
+        <!--@Table the_order-->
+        <result property="orderId" column="order_id" jdbcType="INTEGER"/>
+        <result property="wxid" column="wxid" jdbcType="VARCHAR"/>
+        <result property="orderTime" column="order_time" jdbcType="TIMESTAMP"/>
+        <result property="senderId" column="sender_id" jdbcType="VARCHAR"/>
+        <result property="arriveTime" column="arrive_time" jdbcType="TIMESTAMP"/>
+        <result property="goods" column="goods" jdbcType="VARCHAR"/>
+        <result property="price" column="price" jdbcType="NUMERIC"/>
+        <result property="address" column="address" jdbcType="VARCHAR"/>
+        <result property="ifarrive" column="ifarrive" jdbcType="OTHER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select order_id,
+               wxid,
+               order_time,
+               sender_id,
+               arrive_time,
+               goods,
+               price,
+               address,
+               ifarrive
+        from water.the_order
+        where order_id = #{orderId}
+    </select>
+    <!--通过状态查询-->
+    <select id="queryByarrive" resultMap="BaseResultMap">
+        select order_id,
+               wxid,
+               order_time,
+               sender_id,
+               arrive_time,
+               goods,
+               price,
+               address,
+               ifarrive
+        from water.the_order
+        where ifarrive = #{ifarrive}
+    </select>
+
+    <!--    通过wxid查询-->
+    <select id="queryBywxid" resultMap="BaseResultMap">
+        select *
+        from water.the_order
+        where ifarrive = #{ifarrive}
+          and wxid = #{wxid}
+    </select>
+    <!--    通过sander查询-->
+    <select id="queryBysender" resultMap="BaseResultMap">
+        select *
+        from water.the_order
+        where ifarrive = #{ifarrive}
+          and sender_id = #{senderId}
+    </select>
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select order_id,
+               wxid,
+               order_time,
+               sender_id,
+               arrive_time,
+               goods,
+               price,
+               address,
+               ifarrive
+        from water.the_order
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+        order_id, wxid, order_time, sender_id, arrive_time, goods, price, address, ifarrive
+        from water.the_order
+        <where>
+            <if test="orderId != null">
+                and order_id = #{orderId}
+            </if>
+            <if test="wxid != null and wxid != ''">
+                and wxid = #{wxid}
+            </if>
+            <if test="orderTime != null">
+                and order_time = #{orderTime}
+            </if>
+            <if test="senderId != null">
+                and sender_id = #{senderId}
+            </if>
+            <if test="arriveTime != null">
+                and arrive_time = #{arriveTime}
+            </if>
+            <if test="goods != null and goods != ''">
+                and goods = #{goods}
+            </if>
+            <if test="price != null">
+                and price = #{price}
+            </if>
+            <if test="address != null and address != ''">
+                and address = #{address}
+            </if>
+            <if test="ifarrive != null">
+                and ifarrive = #{ifarrive}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="orderId" useGeneratedKeys="true">
+        insert into water.the_order(wxid, order_time, sender_id, arrive_time, price)
+        values (#{wxid}, #{orderTime}, #{senderId}, #{arriveTime}, #{price})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update water.the_order
+        <set>
+            <if test="wxid != null and wxid != ''">
+                wxid = #{wxid},
+            </if>
+            <if test="orderTime != null">
+                order_time = #{orderTime},
+            </if>
+            <if test="senderId != null">
+                sender_id = #{senderId},
+            </if>
+            <if test="arriveTime != null">
+                arrive_time = #{arriveTime},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="orderId != null">
+                order_id = #{orderId},
+            </if>
+            <if test="goods != null">
+                goods = #{goods},
+            </if>
+            <if test="address != null">
+                address = #{address},
+            </if>
+            <if test="ifarrive != null">
+                ifarrive = #{ifarrive},
+            </if>
+        </set>
+        where order_id = #{orderId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from water.the_order
+        where order_id = #{orderId}
+    </delete>
+
+</mapper>

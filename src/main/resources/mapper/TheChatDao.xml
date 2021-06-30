@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.dao.TheChatDao">
+
+    <resultMap id="BaseResultMap" type="com.app.entity.TheChat">
+        <!--@Table the_chat-->
+        <result property="chats" column="chats" jdbcType="VARCHAR"/>
+        <result property="chatId" column="chat_id" jdbcType="INTEGER"/>
+        <result property="wxid" column="wxid" jdbcType="VARCHAR"/>
+        <result property="chatTime" column="chat_time" jdbcType="TIMESTAMP"/>
+        <result property="receiverid" column="receiverid" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          chats, chat_id, wxid, chat_time, receiverid
+        from water.the_chat
+        where chat_id = #{chatId}
+    </select>
+
+    <select id="queryByreceiver" resultMap="BaseResultMap">
+        select
+            chats, chat_id, wxid, chat_time, receiverid
+        from water.the_chat
+        where receiverid = #{receiverid}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          chats, chat_id, wxid, chat_time, receiverid
+        from water.the_chat
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          chats, chat_id, wxid, chat_time, receiverid
+        from water.the_chat
+        <where>
+            <if test="chats != null and chats != ''">
+                and chats = #{chats}
+            </if>
+            <if test="chatId != null">
+                and chat_id = #{chatId}
+            </if>
+            <if test="wxid != null and wxid != ''">
+                and wxid = #{wxid}
+            </if>
+            <if test="chatTime != null">
+                and chat_time = #{chatTime}
+            </if>
+            <if test="receiverid != null and receiverid != ''">
+                and receiverid = #{receiverid}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="chatId" useGeneratedKeys="true">
+        insert into water.the_chat(chats, wxid, chat_time, receiverid)
+        values (#{chats}, #{wxid}, #{chatTime}, #{receiverid})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update water.the_chat
+        <set>
+            <if test="chats != null and chats != ''">
+                chats = #{chats},
+            </if>
+            <if test="wxid != null and wxid != ''">
+                wxid = #{wxid},
+            </if>
+            <if test="chatTime != null">
+                chat_time = #{chatTime},
+            </if>
+            <if test="receiverid != null and receiverid != ''">
+                receiverid = #{receiverid},
+            </if>
+        </set>
+        where chat_id = #{chatId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from water.the_chat where chat_id = #{chatId}
+    </delete>
+
+</mapper>

@@ -1,0 +1,10 @@
+
+spring:
+  datasource:
+    username: root
+    password: 1
+    url: jdbc:mysql://localhost:3306/water
+    driver-class-name: com.mysql.cj.jdbc.Driver
+mybatis:
+  mapper-locations: classpath:/mapper/*Dao.xml
+  typeAliasesPackage: com.app.entity

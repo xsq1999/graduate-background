@@ -1,0 +1,27 @@
+{
+  "name" : "TheStore",
+  "originTableName" : "the_store",
+  "comment" : null,
+  "fullColumn" : [ {
+    "name" : "storeInformation",
+    "comment" : null,
+    "type" : null,
+    "shortType" : null,
+    "ktShortType" : "String",
+    "custom" : false,
+    "ext" : { }
+  }, {
+    "name" : "sale",
+    "comment" : null,
+    "type" : null,
+    "shortType" : null,
+    "ktShortType" : "String",
+    "custom" : false,
+    "ext" : { }
+  } ],
+  "pkColumn" : null,
+  "otherColumn" : null,
+  "savePackageName" : "com.app",
+  "savePath" : "./src/main/java/com/app",
+  "saveModelName" : "demo"
+}

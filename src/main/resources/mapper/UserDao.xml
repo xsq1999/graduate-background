@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.dao.UserDao">
+
+    <resultMap id="BaseResultMap" type="com.app.entity.User">
+        <!--@Table user-->
+        <result property="wxid" column="wxid" jdbcType="VARCHAR"/>
+        <result property="address" column="address" jdbcType="VARCHAR"/>
+        <result property="userType" column="user_type" jdbcType="INTEGER"/>
+        <result property="orderId" column="order_id" jdbcType="VARCHAR"/>
+        <result property="wxName" column="wx_name" jdbcType="VARCHAR"/>
+        <result property="phoneNumber" column="phone_number" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select wxid,
+               address,
+               user_type,
+               order_id,
+               wx_name,
+               phone_number
+        from water.user
+        where wxid = #{wxid}
+    </select>
+
+    <!--查询单个-->
+    <select id="queryByroleId" resultMap="BaseResultMap">
+        select wxid,
+               address,
+               user_type,
+               order_id,
+               wx_name,
+               phone_number
+        from water.user
+        where user_type = #{usertype}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select wxid,
+               address,
+               user_type,
+               order_id,
+               wx_name,
+               phone_number
+        from water.user
+        limit #{offset}, #{limit}
+    </select>
+    <!--    查询所有user-->
+    <select id="queryAlluser" resultMap="BaseResultMap">
+        select *
+        from water.user
+    </select>
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+        wxid, address, user_type, order_id, wx_name, phone_number
+        from water.user
+        <where>
+            <if test="wxid != null and wxid != ''">
+                and wxid = #{wxid}
+            </if>
+            <if test="address != null and address != ''">
+                and address = #{address}
+            </if>
+            <if test="userType != null">
+                and user_type = #{userType}
+            </if>
+            <if test="orderId != null and orderId != ''">
+                and order_id = #{orderId}
+            </if>
+            <if test="wxName != null and wxName != ''">
+                and wx_name = #{wxName}
+            </if>
+            <if test="phoneNumber != null and phoneNumber != ''">
+                and phone_number = #{phoneNumber}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="wxid" useGeneratedKeys="true">
+        insert into water.user(address)
+        values (#{address})
+    </insert>
+
+    <!--添加地址-->
+    <update id="updateaddress">
+        update water.user
+        <set>
+            <if test="wxName != null">
+                wx_name = #{wxName}
+            </if>
+            <if test="address != null">
+                ,address = #{address}
+            </if>
+            <if test="phoneNumber != null">
+                ,phone_number = #{phoneNumber}
+            </if>
+        </set>
+        where wxid = #{wxid}
+    </update>
+
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update water.user
+        <set>
+            <if test="wxid != null and wxid != ''">
+                wxid = #{wxid}
+            </if>
+            <if test="address != null">
+                and address = #{address}
+            </if>
+            <if test="userType != null">
+                and user_type = #{userType}
+            </if>
+            <if test="orderId != null">
+                and order_id = #{orderId}
+            </if>
+            <if test="wxName != null">
+                and wx_name = #{wxName}
+            </if>
+            <if test="phoneNumber != null">
+                and phone_number = #{phoneNumber}
+            </if>
+        </set>
+        where wxid = #{wxid}
+    </update>
+
+    <!--    通过主键修改roleid-->
+    <update id="updaterole">
+        update water.user
+        <set>
+            <if test="userType != null">
+                user_type = #{userType}
+            </if>
+        </set>
+        where wxid = #{wxid}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from water.user
+        where wxid = #{wxid}
+    </delete>
+
+</mapper>

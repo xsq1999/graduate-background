@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.dao.TheGoodsDao">
+
+    <resultMap id="BaseResultMap" type="com.app.entity.TheGoods">
+        <!--@Table the_goods-->
+        <result property="goodsId" column="goods_id" jdbcType="INTEGER"/>
+        <result property="goodsName" column="goods_name" jdbcType="VARCHAR"/>
+        <result property="price" column="price" jdbcType="NUMERIC"/>
+        <result property="goodsImage" column="goods_image" jdbcType="VARCHAR"/>
+        <result property="goodsBrand" column="goods_brand" jdbcType="VARCHAR"/>
+        <result property="goodsInventory" column="goods_inventory" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select goods_id,
+               goods_name,
+               price,
+               goods_image,
+               goods_brand,
+               goods_inventory
+        from water.the_goods
+        where goods_id = #{goodsId}
+    </select>
+
+    <!--查询单个-->
+    <select id="queryByName" resultMap="BaseResultMap">
+        select goods_id,
+               goods_name,
+               price,
+               goods_image,
+               goods_brand,
+               goods_inventory
+        from water.the_goods
+        where goods_name = #{goodsName}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select goods_id,
+               goods_name,
+               price,
+               goods_image,
+               goods_brand,
+               goods_inventory
+        from water.the_goods
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+        goods_id, goods_name, price, goods_image, goods_brand, goods_inventory
+        from water.the_goods
+        <where>
+            <if test="goodsId != null">
+                and goods_id = #{goodsId}
+            </if>
+            <if test="goodsName != null and goodsName != ''">
+                and goods_name = #{goodsName}
+            </if>
+            <if test="price != null">
+                and price = #{price}
+            </if>
+            <if test="goodsImage != null and goodsImage != ''">
+                and goods_image = #{goodsImage}
+            </if>
+            <if test="goodsBrand != null and goodsBrand != ''">
+                and goods_brand = #{goodsBrand}
+            </if>
+            <if test="goodsInventory != null">
+                and goods_inventory = #{goodsInventory}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="goodsId" useGeneratedKeys="true">
+        insert into water.the_goods(goods_name, price, goods_image, goods_brand, goods_inventory)
+        values (#{goodsName}, #{price}, #{goodsImage}, #{goodsBrand}, #{goodsInventory})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update water.the_goods
+        <set>
+            <if test="goodsName != null and goodsName != ''">
+                goods_name = #{goodsName},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="goodsImage != null">
+                goods_image = #{goodsImage},
+            </if>
+            <if test="goodsBrand != null">
+                goods_brand = #{goodsBrand},
+            </if>
+            <if test="goodsInventory != null">
+                goods_inventory = #{goodsInventory},
+            </if>
+        </set>
+        where goods_id = #{goodsId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from water.the_goods
+        where goods_id = #{goodsId}
+    </delete>
+
+</mapper>
